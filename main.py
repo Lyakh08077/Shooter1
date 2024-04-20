@@ -87,29 +87,19 @@ window = pygame.display.set_mode((win_w, win_h))
 pygame.display.set_caption("Shooter 0.1")
 clock = pygame.time.Clock()
 
-#background = pygame.image.load("galaxy.jpg")
+background = pygame.image.load("Ocean.png")
 background = pygame.transform.scale(background, (win_w, win_h))
 window.blit(background, (0, 0))
 
-rocket_img = pygame.image.load("rocket.png")
+rocket_img = pygame.image.load("1.png")
 rocket = Pers(330, 400, 50, 60, rocket_img, 5)
 
-enemy_img = pygame.image.load("ufo.png")
+enemy_img = pygame.image.load("2.png")
 
 enemies = []
 for i in range(5):
     enemy = Enemy(randint(0, win_w-50), randint(-500, 0), 70, 40, enemy_img, randint(1, 3))
     enemies.append(enemy)
-
-# record
-with open("record.txt", "r", encoding="UTF-8") as file:
-    record = int(file.read())
-
-print(record)
-def new_record(old, new):
-    if new > old:
-        with open("record.txt", "w", encoding="UTF-8") as file:
-            file.write(str(new))        
 
 score = 0
 lost = 0
@@ -125,7 +115,7 @@ while game:
             enemy.move()
             if rocket.rect.colliderect(enemy.rect):
                 finish = True
-                new_record(record, score)
+                
                 game_over = font2.render("Game Over", True, (255, 0, 0))
             for bullet in bullets:
                 if bullet.rect.colliderect(enemy.rect):
@@ -140,7 +130,7 @@ while game:
         if lost >= 3:
             finish = True
             game_over = font2.render("Game Over", True, (255, 0, 0))
-            new_record(record, score)
+            
     else:
         window.blit(game_over, (200,200))
 
@@ -192,7 +182,7 @@ class Player2(GameSprite):
         pass
 
 # Create a second player object
-rocket2_img = pygame.image.load("rocket2.png")
+rocket2_img = pygame.image.load("1.png")
 rocket2 = Player2(230, 400, 50, 60, rocket2_img, 5)
 
 # Inside the game loop, handle second player controls and shooting
