@@ -42,8 +42,8 @@ class Pers(GameSprite):
     def shoot(self):
         if self.clip > 0:
         # fire_snd.play()
-            b = Bullet(self.rect.centerx-7, self.rect.y, 15, 20, bullet.png , 4)
-            self.clip -= 1
+            b = Bullet(self.rect.centerx-7, self.rect.y, 15, 20, bullet_png , 4)
+            #self.clip -= 1
     def reload(self):
         if self.clip <= 0:
             self.clip = 5
@@ -81,7 +81,7 @@ class Bullet(GameSprite):
 font1 = pygame.font.SysFont("Arial", 20)
 font2 = pygame.font.SysFont("Arial", 50)
 
-reload_alert = font1.render("Щоб перезарядитись, натисни E", True, (255, 0, 0))
+#reload_alert = font1.render("Щоб перезарядитись, натисни E", True, (255, 0, 0))
 
 window = pygame.display.set_mode((win_w, win_h))
 pygame.display.set_caption("Shooter 0.1")
@@ -89,12 +89,14 @@ clock = pygame.time.Clock()
 
 background = pygame.image.load("Ocean.png")
 background = pygame.transform.scale(background, (win_w, win_h))
-window.blit(background, (0, 0))
+#window.blit(background, (0, 0))
 
-rocket_img = pygame.image.load("1.png")
+bullet_png = pygame.image.load("3.png")
+
+rocket_img = pygame.image.load("2.png")
 rocket = Pers(330, 400, 50, 60, rocket_img, 5)
 
-enemy_img = pygame.image.load("2.png")
+enemy_img = pygame.image.load("1.png")
 
 enemies = []
 for i in range(5):
@@ -123,7 +125,10 @@ while game:
                     # print(score)
                     enemy.rect.x, enemy.rect.y = randint(0, win_w-50), randint(-500, 0)
                     bullets.remove(bullet)
-
+                    if score %10 == 0:
+                        for en in enemies:
+                            en.speed +=1
+        
         for bullet in bullets:
             bullet.update()
             bullet.move()
@@ -152,48 +157,51 @@ while game:
     window.blit(propusk, (10,10))
     killed = font1.render("Вбито: "+str(score), True, (255, 255, 255))
     window.blit(killed, (10,30))
-    clip_stat = font1.render("Зарядів: "+str(rocket.clip), True, (255, 255, 255))
-    window.blit(clip_stat, (350,10))
-    if rocket.clip <= 0:
-        window.blit(reload_alert, (300,30))
-        # Define a second player class
-class Player2(GameSprite):
-    def __init__(self, x, y, w, h, image, speed):
-        super().__init__(x, y, w, h, image)
-        self.speed = speed
+    # clip_stat = font1.render("Зарядів: "+str(rocket.clip), True, (255, 255, 255))
+    #window.blit(clip_stat, (350,10))
+    #if rocket.clip <= 0:
+        #window.blit(reload_alert, (300,30))
 
-    def move(self, key_left, key_right, key_up, key_down):
-        k = pygame.key.get_pressed()
-        if k[key_right]:
-            if self.rect.right <= win_w:
-                self.rect.x += self.speed 
-        elif k[key_left]:
-            if self.rect.left >= 0:
-                self.rect.x -= self.speed
-        if k[key_down]:
-            if self.rect.bottom <= win_h:
-                self.rect.y += self.speed 
-        elif k[key_up]:
-            if self.rect.top >= 0:
-                self.rect.y -= self.speed
-
-    def shoot(self):
-        # Add shooting logic here for the second player
-        pass
-
-# Create a second player object
-rocket2_img = pygame.image.load("1.png")
-rocket2 = Player2(230, 400, 50, 60, rocket2_img, 5)
-
-# Inside the game loop, handle second player controls and shooting
-while game:
-    if not finish:
-        # Other game logic
-        rocket2.update()
-        rocket2.move(pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN)
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE and not finish:
-                rocket2.shoot()
-            # Other event handling logic
     pygame.display.update()
     clock.tick(FPS)
+        # Define a second player class
+# class Player2(GameSprite):
+#     def __init__(self, x, y, w, h, image, speed):
+#         super().__init__(x, y, w, h, image)
+#         self.speed = speed
+
+#     def move(self, key_left, key_right, key_up, key_down):
+#         k = pygame.key.get_pressed()
+#         if k[key_right]:
+#             if self.rect.right <= win_w:
+#                 self.rect.x += self.speed 
+#         elif k[key_left]:
+#             if self.rect.left >= 0:
+#                 self.rect.x -= self.speed
+#         if k[key_down]:
+#             if self.rect.bottom <= win_h:
+#                 self.rect.y += self.speed 
+#         elif k[key_up]:
+#             if self.rect.top >= 0:
+#                 self.rect.y -= self.speed
+
+#     def shoot(self):
+#         # Add shooting logic here for the second player
+#         pass
+
+# Create a second player object
+#rocket2_img = pygame.image.load("1.png")
+#rocket2 = Player2(230, 400, 50, 60, rocket2_img, 5)
+
+# Inside the game loop, handle second player controls and shooting
+# while game:
+#     if not finish:
+#         # Other game logic
+#         rocket2.update()
+#         rocket2.move(pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN)
+#         for event in pygame.event.get():
+#             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE and not finish:
+#                 rocket2.shoot()
+#             # Other event handling logic
+#      pygame.display.update()
+#      clock.tick(FPS)
